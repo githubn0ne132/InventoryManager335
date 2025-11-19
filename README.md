@@ -56,3 +56,19 @@ Nexus Vault is a high-performance inventory, gear, and appearance management sui
 ## Testing Notes
 - Manual in-game verification will be required to confirm Omagad interactions, gear equip flows, transmog appearance registration, and vendor/destruction rules.
 
+## Repository Layout
+- `NexusVault.toc` — addon manifest for 3.3.5a clients.
+- `NexusVault.lua` — core bootstrap, event routing, saved variable defaults, minimap button, and slash command registration.
+- `omagad.lua` — defensive helper wrappers around `:Omagad("...")` for casting, equipping, destroying, and selling without confirmation dialogs.
+- `weights.lua` — default stat-weight tables per specialization with persistence helpers.
+- `gear.lua` — item scoring, upgrade detection, and auto-equip routines tied to bag/equipment events.
+- `transmog.lua` — appearance learning pipeline that temporarily equips items then restores the best set.
+- `vendor.lua` — rule-driven vendor selling and destruction handlers triggered on vendor/bag events.
+- `ui.lua` — in-game control panel using Blizzard frames with feature toggles, spec selector, and value sliders.
+
+## Usage Overview
+- Use `/nv` or the minimap button to open the configuration frame.
+- Toggle automation behaviors (auto-sell, auto-destroy, auto-equip, transmog) and adjust vendor/destruction value thresholds.
+- Select the active specialization profile to drive stat-weighted gear scoring.
+- Start or stop transmog learning runs directly from the control panel.
+

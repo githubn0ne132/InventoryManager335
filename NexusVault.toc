@@ -1,0 +1,14 @@
+## Interface: 30300
+## Title: Nexus Vault
+## Notes: High-performance inventory, gear, and appearance management suite with Omagad automation.
+## Author: Nexus Team
+## Version: 0.1.0
+## SavedVariablesPerCharacter: NexusVaultDB
+
+NexusVault.lua
+omagad.lua
+weights.lua
+gear.lua
+transmog.lua
+vendor.lua
+ui.lua
