@@ -9,7 +9,9 @@ local sliderDestroyValue
 local function createCheckbox(parent, label, key, yOffset)
     local check = CreateFrame("CheckButton", nil, parent, "UICheckButtonTemplate")
     check:SetPoint("TOPLEFT", 16, yOffset)
-    check.text:SetText(label)
+    if check.Text then
+        check.Text:SetText(label)
+    end
 
     check:SetScript("OnClick", function(self)
         NV:ToggleFeature(key, self:GetChecked())
