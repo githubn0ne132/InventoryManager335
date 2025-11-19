@@ -52,7 +52,9 @@ local function createSlider(parent, label, minVal, maxVal, step, onValueChanged)
     local slider = CreateFrame("Slider", nil, parent, "OptionsSliderTemplate")
     slider:SetMinMaxValues(minVal, maxVal)
     slider:SetValueStep(step)
-    slider:SetObeyStepOnDrag(true)
+    if slider.SetObeyStepOnDrag then
+        slider:SetObeyStepOnDrag(true)
+    end
     slider:SetWidth(200)
     slider:SetScript("OnValueChanged", function(self, value)
         self.Text:SetText(label .. ": " .. value)
@@ -66,11 +68,27 @@ end
 
 function NV:ToggleUI()
     if not frame then
-        frame = CreateFrame("Frame", "NexusVaultConfig", UIParent, "BasicFrameTemplateWithInset")
+        frame = CreateFrame("Frame", "NexusVaultConfig", UIParent)
         frame:SetSize(360, 320)
         frame:SetPoint("CENTER")
-        frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-        frame.title:SetPoint("LEFT", frame.TitleBg, "LEFT", 5, 0)
+
+        frame:SetBackdrop({
+            bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+            edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+            tile = true,
+            tileSize = 32,
+            edgeSize = 32,
+            insets = { left = 11, right = 12, top = 12, bottom = 11 },
+        })
+
+        frame:SetMovable(true)
+        frame:EnableMouse(true)
+        frame:RegisterForDrag("LeftButton")
+        frame:SetScript("OnDragStart", frame.StartMoving)
+        frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
+
+        frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
+        frame.title:SetPoint("TOP", 0, -12)
         frame.title:SetText("Nexus Vault")
 
         toggles.autoSell = createCheckbox(frame, "Enable Auto-Sell", "autoSell", -40)

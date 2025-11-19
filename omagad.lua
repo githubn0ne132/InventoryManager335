@@ -56,9 +56,21 @@ function NV.SafePickup(bag, slot)
     return safeCall(string.format("PickupContainerItem(%d,%d)", bag, slot))
 end
 
-function NV.SafeEquipInventorySlot(slotId)
-    if not slotId then
+function NV.EquipLink(link, slotId)
+    if not link then
         return
     end
-    return safeCall(string.format("EquipPendingItem(%d)", slotId))
+
+    local quoted = string.format("%q", link)
+    if slotId then
+        return safeCall(string.format("EquipItemByName(%s,%d)", quoted, slotId))
+    end
+    return safeCall(string.format("EquipItemByName(%s)", quoted))
+end
+
+function NV.SafeEquipInventorySlot(slotId, link)
+    if not slotId or not link then
+        return
+    end
+    return NV.EquipLink(link, slotId)
 end

@@ -30,6 +30,34 @@ local NexusVault = {
 _G.NexusVault = NexusVault
 
 local eventFrame = CreateFrame("Frame")
+local timerFrame = CreateFrame("Frame")
+local scheduled = {}
+
+function NexusVault:After(delay, func)
+    if type(func) ~= "function" then
+        return
+    end
+
+    if C_Timer and C_Timer.After then
+        return C_Timer.After(delay, func)
+    end
+
+    scheduled[#scheduled + 1] = { remaining = delay, callback = func }
+end
+
+timerFrame:SetScript("OnUpdate", function(_, elapsed)
+    for i = #scheduled, 1, -1 do
+        local entry = scheduled[i]
+        entry.remaining = entry.remaining - elapsed
+        if entry.remaining <= 0 then
+            table.remove(scheduled, i)
+            local ok, err = pcall(entry.callback)
+            if not ok then
+                NexusVault:Print("Timer error: " .. tostring(err))
+            end
+        end
+    end
+end)
 
 local function CloneDefaults()
     local copy = {}

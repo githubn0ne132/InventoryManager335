@@ -51,7 +51,7 @@ end
 local function restoreGear()
     for slot, link in pairs(previousGear) do
         if link then
-            NV.SafeEquipInventorySlot(slot)
+            NV.SafeEquipInventorySlot(slot, link)
         end
     end
     NV:RunGearEvaluation()
@@ -69,7 +69,7 @@ local function learnNext(candidates)
     progress.processed = progress.processed + 1
     NV:Print(string.format("Learning appearance: %s (%d/%d)", entry.link or "item", progress.processed, progress.total))
     NV.TryLearnAppearance(entry.bag, entry.slot)
-    C_Timer.After(0.1, function()
+    NV:After(0.1, function()
         learnNext(candidates)
     end)
 end
